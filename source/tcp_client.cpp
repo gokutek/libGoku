@@ -29,7 +29,7 @@ int TcpClient::Disconnect()
 
 int TcpClient::Send(void *data, size_t sz)
 {
-	return 0;
+	return impl_->Send(data, sz);
 }
 
 

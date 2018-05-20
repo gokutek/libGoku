@@ -16,12 +16,18 @@
     <ClCompile Include="..\..\..\test\chat_client.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\test\file_tranfer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\test\echo_server.h">
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\test\chat_client.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\test\file_tranfer.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>

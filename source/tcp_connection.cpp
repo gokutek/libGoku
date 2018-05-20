@@ -40,7 +40,6 @@ void TcpConnection::S_AfterRead(uv_stream_t *stream, ssize_t nread, uv_buf_t con
 	assert(self != nullptr && self->stream_.get() == (uv_tcp_t*)stream);
 
 	if (nread < 0) {
-		assert(nread == UV_EOF);
 		free(buf->base);
 		self->Close();
 		return;
