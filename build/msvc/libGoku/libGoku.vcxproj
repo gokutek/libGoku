@@ -157,6 +157,7 @@
     <ClCompile Include="..\..\..\source\dll_main.cpp" />
     <ClCompile Include="..\..\..\source\loop.cpp" />
     <ClCompile Include="..\..\..\source\tcp_client.cpp" />
+    <ClCompile Include="..\..\..\source\tcp_client_impl.cpp" />
     <ClCompile Include="..\..\..\source\tcp_connection.cpp" />
     <ClCompile Include="..\..\..\source\tcp_server.cpp" />
     <ClCompile Include="..\..\..\source\tcp_server_impl.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="..\..\..\include\goku\tcp_client.h" />
     <ClInclude Include="..\..\..\include\goku\tcp_server.h" />
     <ClInclude Include="..\..\..\source\impl_define.h" />
+    <ClInclude Include="..\..\..\source\tcp_client_impl.h" />
     <ClInclude Include="..\..\..\source\tcp_connection.h" />
     <ClInclude Include="..\..\..\source\tcp_server_impl.h" />
   </ItemGroup>

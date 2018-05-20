@@ -1,24 +1,26 @@
 ﻿#ifndef GOKU_TCP_CONNECTION_H
 #define GOKU_TCP_CONNECTION_H
 
-#include <queue>
+#include <functional>
 #include <memory>
+#include <queue>
 #include "uv.h"
 #include "goku/define.h"
 #include "impl_define.h"
 
 NS_GOKU_BEG
 
-class TcpServerImpl;
-
 class TcpConnection
 {
+	typedef std::function<void(TcpConnection*, void*, size_t)> on_read_cb_t;
+	typedef std::function<void(TcpConnection*)> on_close_cb_t;
+
 public:
-	TcpConnection(TcpServerImpl *server, std::unique_ptr<uv_tcp_t> &&stream);
+	TcpConnection(std::unique_ptr<uv_tcp_t> &&stream, on_read_cb_t on_read, on_close_cb_t on_close);
 	
 	~TcpConnection();
 
-	int StartRead();
+	int Init();
 
 	int Send(void *data, size_t sz);
 
@@ -34,8 +36,9 @@ private:
 	void SendFromQueue();
 
 private:
-	TcpServerImpl								*server_;
 	std::unique_ptr<uv_tcp_t>					stream_;
+	on_read_cb_t								on_read_;
+	on_close_cb_t								on_close_;
 	std::queue<std::unique_ptr<WriteRequest>>	writeQueue_;
 };
 

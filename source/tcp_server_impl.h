@@ -33,25 +33,26 @@ public:
 
 	int Disconnect(uint64_t peer);
 
-	void OnClose(TcpConnection *connection);
-
-	void OnRead(TcpConnection *connection, char const *buf, size_t sz);
-
 private:
+	// 收到客户端连接
 	static void S_OnConnection(uv_stream_t* server, int status);
 	
 	// 监听套接字关闭
 	static void S_OnClose(uv_handle_t* handle);
 
 	void OnConnection(uv_stream_t* server, int status);
+
+	void OnRead(TcpConnection *connection, void *buf, size_t sz);
+
+	void OnClose(TcpConnection *connection);
 	
 private:
 	Loop												*loop_;
-	uv_tcp_t											server_;
+	std::unique_ptr<uv_tcp_t>							server_;
 	std::map<uint64_t, std::unique_ptr<TcpConnection>>	clients_;
 	on_connection_cb_t									on_connection_;
 	on_read_cb_t										on_read_;
-	on_close_cb_t									on_close_;
+	on_close_cb_t										on_close_;
 };
 
 NS_GOKU_END

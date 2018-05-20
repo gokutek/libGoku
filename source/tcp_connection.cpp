@@ -5,9 +5,10 @@
 
 NS_GOKU_BEG
 
-TcpConnection::TcpConnection(TcpServerImpl *server, std::unique_ptr<uv_tcp_t> &&stream)
-	: server_(server)
-	, stream_(std::move(stream))
+TcpConnection::TcpConnection(std::unique_ptr<uv_tcp_t> &&stream, on_read_cb_t on_read, on_close_cb_t on_close)
+	: stream_(std::move(stream))
+	, on_read_(on_read)
+	, on_close_(on_close)
 {
 	stream_->data = this;
 }
@@ -18,7 +19,7 @@ TcpConnection::~TcpConnection()
 }
 
 
-int TcpConnection::StartRead()
+int TcpConnection::Init()
 {
 	int ret = uv_read_start((uv_stream_t*)&*stream_, &TcpConnection::S_Alloc, &TcpConnection::S_AfterRead);
 	assert(ret == 0);
@@ -50,7 +51,7 @@ void TcpConnection::S_AfterRead(uv_stream_t *stream, ssize_t nread, uv_buf_t con
 		return;
 	}
 
-	self->server_->OnRead(self, buf->base, nread);
+	self->on_read_(self, buf->base, nread);
 	free(buf->base);
 }
 
@@ -106,7 +107,7 @@ void TcpConnection::S_OnClose(uv_handle_t* handle)
 {
 	TcpConnection *self = (TcpConnection*)handle->data;
 	assert(self);
-	self->server_->OnClose(self);
+	self->on_close_(self);
 }
 
 

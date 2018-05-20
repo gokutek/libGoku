@@ -28,6 +28,9 @@
     <ClCompile Include="..\..\..\source\tcp_server_impl.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\tcp_client_impl.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\goku\loop.h">
@@ -49,6 +52,9 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\impl_define.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcp_client_impl.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>

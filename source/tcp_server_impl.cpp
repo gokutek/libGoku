@@ -21,14 +21,15 @@ int TcpServerImpl::StartListen(char const *ip, int port)
 	int ret = uv_ip4_addr(ip, port, &addr);
 	if (ret) { return -1; }
 
-	ret = uv_tcp_init(*loop_, &server_);
+	server_.reset(new uv_tcp_t());
+	ret = uv_tcp_init(*loop_, &*server_);
 	if (ret) { return -1; }
-	server_.data = this;
+	server_->data = this;
 
-	ret = uv_tcp_bind(&server_, (const struct sockaddr*) &addr, 0);
+	ret = uv_tcp_bind(&*server_, (const struct sockaddr*) &addr, 0);
 	if (ret) { return -1; }
 
-	ret = uv_listen((uv_stream_t*)&server_, SOMAXCONN, &TcpServerImpl::S_OnConnection);
+	ret = uv_listen((uv_stream_t*)&*server_, SOMAXCONN, &TcpServerImpl::S_OnConnection);
 	if (ret) { return -1; }
 
 	return 0;
@@ -37,7 +38,9 @@ int TcpServerImpl::StartListen(char const *ip, int port)
 
 int TcpServerImpl::StopListen()
 {
-	uv_close((uv_handle_t*)&server_, &TcpServerImpl::S_OnClose);
+	if (!server_) { return -1; }
+	if (uv_is_closing((uv_handle_t*)&*server_)) { return -1; }
+	uv_close((uv_handle_t*)&*server_, &TcpServerImpl::S_OnClose);
 	return 0;
 }
 
@@ -96,18 +99,23 @@ void TcpServerImpl::OnConnection(uv_stream_t* server, int status)
 	ret = uv_accept(server, (uv_stream_t*)&*stream);
 	assert(ret == 0);
 
-	TcpConnection *connection = new TcpConnection(this, std::move(stream));
+	TcpConnection *connection = new TcpConnection(std::move(stream), 
+		std::bind(&TcpServerImpl::OnRead, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3),
+		std::bind(&TcpServerImpl::OnClose, this, std::placeholders::_1));
 	clients_.insert(std::make_pair(uint64_t(connection), std::unique_ptr<TcpConnection>(connection)));
 	
 	on_connection_(uint64_t(connection));
 
-	connection->StartRead();
+	connection->Init();
 }
 
 
 void TcpServerImpl::S_OnClose(uv_handle_t* handle)
 {
 	// TODO:
+	TcpServerImpl *self = (TcpServerImpl*)handle->data;
+	assert(self);
+	self->server_.reset();
 }
 
 
@@ -120,7 +128,7 @@ void TcpServerImpl::OnClose(TcpConnection *connection)
 }
 
 
-void TcpServerImpl::OnRead(TcpConnection *connection, char const *buf, size_t sz)
+void TcpServerImpl::OnRead(TcpConnection *connection, void *buf, size_t sz)
 {
 	on_read_(uint64_t(connection), (void*)buf, sz);
 }
