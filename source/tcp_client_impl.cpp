@@ -84,14 +84,14 @@ void TcpClientImpl::SetOnCloseCallback(on_close_cb_t const &cb)
 void TcpClientImpl::OnRead(TcpConnection *connection, void *data, size_t sz)
 {
 	assert(connection == connection_.get());
-	if (on_read_) { on_read_(uint64_t(connection), data, sz); }
+	if (on_read_) { on_read_(peer_t(connection), data, sz); }
 }
 
 
 void TcpClientImpl::OnClose(TcpConnection *connection)
 {
 	assert(connection == connection_.get());
-	if (on_close_) { on_close_(uint64_t(connection)); }
+	if (on_close_) { on_close_(peer_t(connection)); }
 }
 
 NS_GOKU_END

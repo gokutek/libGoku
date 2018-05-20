@@ -48,13 +48,13 @@ void TcpServer::SetOnCloseCallback(on_close_cb_t const &cb)
 }
 
 
-int TcpServer::Send(uint64_t peer, void *data, size_t sz)
+int TcpServer::Send(peer_t peer, void *data, size_t sz)
 {
 	return impl_->Send(peer, data, sz);
 }
 
 
-int TcpServer::Disconnect(uint64_t peer)
+int TcpServer::Disconnect(peer_t peer)
 {
 	return impl_->Disconnect(peer);
 }

@@ -63,7 +63,7 @@ void TcpServerImpl::SetOnShutdownCallback(on_close_cb_t const &cb)
 }
 
 
-int TcpServerImpl::Send(uint64_t peer, void *data, size_t sz)
+int TcpServerImpl::Send(peer_t peer, void *data, size_t sz)
 {
 	auto iter = clients_.find(peer);
 	if (iter == clients_.end()) { return -1; }
@@ -71,7 +71,7 @@ int TcpServerImpl::Send(uint64_t peer, void *data, size_t sz)
 }
 
 
-int TcpServerImpl::Disconnect(uint64_t peer)
+int TcpServerImpl::Disconnect(peer_t peer)
 {
 	auto iter = clients_.find(peer);
 	if (iter == clients_.end()) { return -1; }
@@ -102,9 +102,9 @@ void TcpServerImpl::OnConnection(uv_stream_t* server, int status)
 	TcpConnection *connection = new TcpConnection(std::move(stream), 
 		std::bind(&TcpServerImpl::OnRead, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3),
 		std::bind(&TcpServerImpl::OnClose, this, std::placeholders::_1));
-	clients_.insert(std::make_pair(uint64_t(connection), std::unique_ptr<TcpConnection>(connection)));
+	clients_.insert(std::make_pair(peer_t(connection), std::unique_ptr<TcpConnection>(connection)));
 	
-	on_connection_(uint64_t(connection));
+	on_connection_(peer_t(connection));
 
 	connection->Init();
 }
@@ -121,8 +121,8 @@ void TcpServerImpl::S_OnClose(uv_handle_t* handle)
 
 void TcpServerImpl::OnClose(TcpConnection *connection)
 {
-	on_close_(uint64_t(connection));
-	auto iter = clients_.find(uint64_t(connection));
+	on_close_(peer_t(connection));
+	auto iter = clients_.find(peer_t(connection));
 	assert(iter != clients_.end());
 	clients_.erase(iter);
 }
@@ -130,7 +130,7 @@ void TcpServerImpl::OnClose(TcpConnection *connection)
 
 void TcpServerImpl::OnRead(TcpConnection *connection, void *buf, size_t sz)
 {
-	on_read_(uint64_t(connection), (void*)buf, sz);
+	on_read_(peer_t(connection), (void*)buf, sz);
 }
 
 NS_GOKU_END

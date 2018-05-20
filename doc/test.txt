@@ -1,5 +1,5 @@
 特殊情况测试：
-1.
+1.uv_read_start后紧接着调用uv_read_stop	[ok]
 2.
 3.
 4.

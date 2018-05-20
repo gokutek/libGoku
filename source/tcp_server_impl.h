@@ -29,9 +29,9 @@ public:
 
 	void SetOnShutdownCallback(on_close_cb_t const &cb);
 
-	int Send(uint64_t peer, void *data, size_t sz);
+	int Send(peer_t peer, void *data, size_t sz);
 
-	int Disconnect(uint64_t peer);
+	int Disconnect(peer_t peer);
 
 private:
 	// 收到客户端连接
@@ -49,7 +49,7 @@ private:
 private:
 	Loop												*loop_;
 	std::unique_ptr<uv_tcp_t>							server_;
-	std::map<uint64_t, std::unique_ptr<TcpConnection>>	clients_;
+	std::map<peer_t, std::unique_ptr<TcpConnection>>	clients_;
 	on_connection_cb_t									on_connection_;
 	on_read_cb_t										on_read_;
 	on_close_cb_t										on_close_;

@@ -24,7 +24,20 @@ Loop::~Loop()
 
 int Loop::Run(LoopRunMode mode)
 {
+	if (!loop_) { return -1; }
 	int const ret = uv_run(loop_, (uv_run_mode)mode);
+	return ret;
+}
+
+
+int Loop::Close()
+{
+	if (!loop_) { return -1; }
+	int const ret = uv_loop_close(loop_);
+	if (!ret) {
+		delete loop_;
+		loop_ = NULL;
+	}
 	return ret;
 }
 
@@ -35,17 +48,6 @@ void Loop::Diagnose()
 		uv_print_all_handles(loop_, stdout);
 		uv_print_active_handles(loop_, stdout);
 	}
-}
-
-
-int Loop::Close()
-{
-	int const ret = uv_loop_close(loop_);
-	if (!ret) {
-		delete loop_;
-		loop_ = NULL;
-	}
-	return ret;
 }
 
 NS_GOKU_END

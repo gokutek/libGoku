@@ -9,6 +9,10 @@ NS_GOKU_BEG
 
 class TcpServerImpl;
 
+/*
+===============================================================================
+===============================================================================
+*/
 class GOKU_API TcpServer
 {
 public:
@@ -36,10 +40,10 @@ public:
 	void SetOnCloseCallback(on_close_cb_t const &cb);
 
 	// 向客户端发送数据
-	int Send(uint64_t peer, void *data, size_t sz);
+	int Send(peer_t peer, void *data, size_t sz);
 
 	// 断开与客户端的连接
-	int Disconnect(uint64_t peer);
+	int Disconnect(peer_t peer);
 
 private:
 	TcpServerImpl *impl_;

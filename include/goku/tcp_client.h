@@ -8,10 +8,18 @@ NS_GOKU_BEG
 
 class TcpClientImpl;
 
+/*
+===============================================================================
+===============================================================================
+*/
 class GOKU_API TcpClient
 {
 public:
 	TcpClient(Loop *loop);
+
+	TcpClient(TcpClient const&) = delete;
+
+	TcpClient& operator=(TcpClient const&) = delete;
 
 	~TcpClient();
 

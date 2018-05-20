@@ -27,7 +27,7 @@ int ChatClient::Start()
 }
 
 
-void ChatClient::OnRead(uint64_t, void *data, size_t sz)
+void ChatClient::OnRead(peer_t, void *data, size_t sz)
 {
 	std::string const str((char const*)data, (char const*)data + sz);
 	std::cout << str << std::endl;
@@ -37,7 +37,7 @@ void ChatClient::OnRead(uint64_t, void *data, size_t sz)
 }
 
 
-void ChatClient::OnClose(uint64_t)
+void ChatClient::OnClose(peer_t)
 {
 	std::cout << "Lost connection to the server" << std::endl;
 }

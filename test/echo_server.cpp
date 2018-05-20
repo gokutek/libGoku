@@ -26,13 +26,13 @@ void EchoServer::Stop()
 }
 
 
-void EchoServer::OnConnection(uint64_t peer)
+void EchoServer::OnConnection(peer_t peer)
 {
 	std::cout << __FUNCTION__ << ": " << peer << std::endl;
 }
 
 
-void EchoServer::OnRead(uint64_t peer, void *buf, size_t sz)
+void EchoServer::OnRead(peer_t peer, void *buf, size_t sz)
 {
 	std::string cmd((char const*)buf, (char const*)buf + sz);
 
@@ -45,7 +45,7 @@ void EchoServer::OnRead(uint64_t peer, void *buf, size_t sz)
 }
 
 
-void EchoServer::OnClose(uint64_t peer)
+void EchoServer::OnClose(peer_t peer)
 {
 	std::cout << __FUNCTION__ << ": " << peer << std::endl;
 }

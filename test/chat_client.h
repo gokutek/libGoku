@@ -16,9 +16,9 @@ public:
 	int Start();
 
 private:
-	void OnRead(uint64_t, void *data, size_t sz);
+	void OnRead(peer_t, void *data, size_t sz);
 
-	void OnClose(uint64_t);
+	void OnClose(peer_t);
 
 	void OnConnect(int status);
 

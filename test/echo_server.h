@@ -16,11 +16,11 @@ public:
 	void Stop();
 
 private:
-	void OnConnection(uint64_t peer);
+	void OnConnection(peer_t peer);
 
-	void OnRead(uint64_t peer, void *buf, size_t sz);
+	void OnRead(peer_t peer, void *buf, size_t sz);
 
-	void OnClose(uint64_t peer);
+	void OnClose(peer_t peer);
 
 private:
 	TcpServer server_;
