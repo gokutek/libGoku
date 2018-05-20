@@ -92,6 +92,7 @@ void TcpConnection::SendFromQueue()
 
 void TcpConnection::S_AfterWrite(uv_write_t *req, int status)
 {
+	assert(!status);
 	TcpConnection *self = (TcpConnection*)req->data;
 	assert(self);
 	assert(!self->writeQueue_.empty());
@@ -124,6 +125,7 @@ int TcpConnection::Close()
 		sreq->data = stream->data;
 		uv_shutdown(sreq, stream, &TcpConnection::S_AfterShutdown);
 	}
+
 	return 0;
 }
 

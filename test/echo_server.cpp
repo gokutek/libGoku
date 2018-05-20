@@ -35,7 +35,6 @@ void EchoServer::OnConnection(peer_t peer)
 void EchoServer::OnRead(peer_t peer, void *buf, size_t sz)
 {
 	std::string cmd((char const*)buf, (char const*)buf + sz);
-
 	server_.Send(peer, buf, sz);
 	if (cmd == "quit") {
 		server_.Disconnect(peer);
