@@ -1,0 +1,8 @@
+## libuv测试用例
+
+* uv_read_start后立即调用uv_read_stop（OK）
+* uv_write后立即调用uv_close（）
+* uv_read_start后立即调用uv_close（）
+* 在read完成回调中调用uv_close（）
+* 在write完成回调中调用uv_close（）
+* 评估单次发送数据包极限大小（）
