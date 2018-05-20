@@ -30,7 +30,7 @@ int TcpConnection::Init()
 void TcpConnection::S_Alloc(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf)
 {
 	buf->base = (char*)malloc(suggested_size);
-	buf->len = suggested_size;
+	buf->len = (ULONG)suggested_size;
 }
 
 
@@ -71,7 +71,7 @@ int TcpConnection::Send(void *data, size_t sz)
 	auto req = std::make_unique<WriteRequest>();
 	void *clone = malloc(sz);
 	memcpy(clone, data, sz);
-	req->buf = uv_buf_init((char*)clone, sz);
+	req->buf = uv_buf_init((char*)clone, (unsigned int)sz);
 	req->req.data = this;
 	bool const writeNow = writeQueue_.empty();
 	writeQueue_.push(std::move(req));
