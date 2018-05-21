@@ -30,7 +30,7 @@ public:
 
 	void SetOnCloseCallback(on_close_cb_t const &cb) override;
 
-	int Send(peer_t peer, void *data, size_t sz) override;
+	int Send(peer_t peer, void const *data, size_t sz) override;
 
 	int Disconnect(peer_t peer) override;
 

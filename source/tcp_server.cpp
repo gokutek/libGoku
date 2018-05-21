@@ -63,7 +63,7 @@ void TcpServer::SetOnCloseCallback(on_close_cb_t const &cb)
 }
 
 
-int TcpServer::Send(peer_t peer, void *data, size_t sz)
+int TcpServer::Send(peer_t peer, void const *data, size_t sz)
 {
 	auto iter = clients_.find(peer);
 	if (iter == clients_.end()) { return -1; }

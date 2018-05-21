@@ -30,7 +30,7 @@ public:
 	virtual void SetOnCloseCallback(on_close_cb_t const &cb) = 0;
 
 	// 向客户端发送数据
-	virtual int Send(peer_t peer, void *data, size_t sz) = 0;
+	virtual int Send(peer_t peer, void const *data, size_t sz) = 0;
 
 	// 断开与客户端的连接
 	virtual int Disconnect(peer_t peer) = 0;
