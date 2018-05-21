@@ -13,49 +13,61 @@
     <ClCompile Include="..\..\..\source\dll_main.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\tcp_client.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\tcp_server.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\loop.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\tcp_connection.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\tcp_server_impl.cpp">
+    <ClCompile Include="..\..\..\source\tcp_server.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\tcp_client_impl.cpp">
+    <ClCompile Include="..\..\..\source\tcp_client.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\object_factory.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\include\goku\loop.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\goku\tcp_client.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\goku\tcp_server.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\goku\define.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\tcp_connection.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\tcp_server_impl.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\impl_define.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\tcp_client_impl.h">
+    <ClInclude Include="..\..\..\source\loop.h">
       <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\goku\i_tcp_client.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\goku\i_tcp_server.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\goku\i_loop.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcp_server.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcp_client.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\goku\i_object_factory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\object_factory.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\goku\goku.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\goku\loader.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

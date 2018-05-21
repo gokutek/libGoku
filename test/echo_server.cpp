@@ -4,25 +4,31 @@
 
 NS_GOKU_BEG
 
-EchoServer::EchoServer(Loop *loop)
-	: server_(loop)
+EchoServer::EchoServer(ILoop *loop)
 {
-	server_.SetOnConnectionCallback(std::bind(&EchoServer::OnConnection, this, std::placeholders::_1));
-	server_.SetOnReadCallback(std::bind(&EchoServer::OnRead, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-	server_.SetOnCloseCallback(std::bind(&EchoServer::OnClose, this, std::placeholders::_1));
+	server_ = GetGoku()->CreateTcpServer(loop);
+	server_->SetOnConnectionCallback(std::bind(&EchoServer::OnConnection, this, std::placeholders::_1));
+	server_->SetOnReadCallback(std::bind(&EchoServer::OnRead, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	server_->SetOnCloseCallback(std::bind(&EchoServer::OnClose, this, std::placeholders::_1));
+}
+
+
+EchoServer::~EchoServer()
+{
+	GetGoku()->DestroyTcpServer(server_);
 }
 
 
 void EchoServer::Start()
 {
-	int ret = server_.StartListen("0.0.0.0", 55555);
+	int ret = server_->StartListen("0.0.0.0", 55555);
 	assert(!ret);
 }
 
 
 void EchoServer::Stop()
 {
-	server_.StopListen();
+	server_->StopListen();
 }
 
 
@@ -35,9 +41,9 @@ void EchoServer::OnConnection(peer_t peer)
 void EchoServer::OnRead(peer_t peer, void *buf, size_t sz)
 {
 	std::string cmd((char const*)buf, (char const*)buf + sz);
-	server_.Send(peer, buf, sz);
+	server_->Send(peer, buf, sz);
 	if (cmd == "quit") {
-		server_.Disconnect(peer);
+		server_->Disconnect(peer);
 	} else if (cmd == "close_server") {
 		Stop();
 	}

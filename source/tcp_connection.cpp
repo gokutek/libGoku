@@ -1,7 +1,6 @@
 ﻿#include <assert.h>
 #include <algorithm>
 #include "tcp_connection.h"
-#include "tcp_server_impl.h"
 #include "impl_define.h"
 
 NS_GOKU_BEG

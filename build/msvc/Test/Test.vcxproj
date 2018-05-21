@@ -156,11 +156,6 @@
     <ClCompile Include="..\..\..\test\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libGoku\libGoku.vcxproj">
-      <Project>{c0d7a842-7157-4b01-b976-0c3a33917d9f}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\..\..\test\chat_client.h" />
     <ClInclude Include="..\..\..\test\echo_server.h" />
     <ClInclude Include="..\..\..\test\file_tranfer.h" />

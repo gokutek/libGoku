@@ -5,23 +5,24 @@
 
 NS_GOKU_BEG
 
-ChatClient::ChatClient(Loop *loop)
-	: client_(loop)
+ChatClient::ChatClient(ILoop *loop)
 {
-	client_.SetOnConnectCallback(std::bind(&ChatClient::OnConnect, this, std::placeholders::_1));
-	client_.SetOnReadCallback(std::bind(&ChatClient::OnRead, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-	client_.SetOnCloseCallback(std::bind(&ChatClient::OnClose, this, std::placeholders::_1));
+	client_ = GetGoku()->CreateTcpClient(loop);
+	client_->SetOnConnectCallback(std::bind(&ChatClient::OnConnect, this, std::placeholders::_1));
+	client_->SetOnReadCallback(std::bind(&ChatClient::OnRead, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	client_->SetOnCloseCallback(std::bind(&ChatClient::OnClose, this, std::placeholders::_1));
 }
 
 
 ChatClient::~ChatClient()
 {
+	GetGoku()->DestroyTcpClient(client_);
 }
 
 
 int ChatClient::Start()
 {
-	int ret = client_.Connect("127.0.0.1", 9005);
+	int ret = client_->Connect("127.0.0.1", 9005);
 	assert(!ret);
 	return 0;
 }
@@ -32,7 +33,7 @@ void ChatClient::OnRead(peer_t, void *data, size_t sz)
 	std::string const str((char const*)data, (char const*)data + sz);
 	std::cout << str << std::endl;
 	if (str == "quit") {
-		client_.Disconnect();
+		client_->Disconnect();
 	}
 }
 

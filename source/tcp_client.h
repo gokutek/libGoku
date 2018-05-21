@@ -1,33 +1,34 @@
-#ifndef TCP_CLIENT_IMPL_H
-#define TCP_CLIENT_IMPL_H
+#ifndef TCP_CLIENT_H
+#define TCP_CLIENT_H
 
 #include <memory>
 #include "goku/define.h"
-#include "goku/loop.h"
+#include "goku/i_tcp_client.h"
+#include "loop.h"
 #include "uv.h"
 
 NS_GOKU_BEG
 
 class TcpConnection;
 
-class TcpClientImpl
+class TcpClient : public ITcpClient
 {
 public:
-	TcpClientImpl(Loop *loop);
+	TcpClient(Loop *loop);
 	
-	~TcpClientImpl();
+	~TcpClient();
 
-	int Connect(char const *ip, int port);
+	int Connect(char const *ip, int port) override;
 
-	int Disconnect();
+	int Disconnect() override;
 
-	int Send(void const *data, size_t sz);
+	int Send(void const *data, size_t sz) override;
 
-	void SetOnConnectCallback(on_connect_cb_t const cb);
+	void SetOnConnectCallback(on_connect_cb_t const cb) override;
 
-	void SetOnReadCallback(on_read_cb_t const &cb);
+	void SetOnReadCallback(on_read_cb_t const &cb) override;
 
-	void SetOnCloseCallback(on_close_cb_t const &cb);
+	void SetOnCloseCallback(on_close_cb_t const &cb) override;
 
 private:
 	static void S_OnConnect(uv_connect_t* req, int status);
@@ -47,4 +48,4 @@ private:
 
 NS_GOKU_END
 
-#endif // TCP_CLIENT_IMPL_H
+#endif // TCP_CLIENT_H

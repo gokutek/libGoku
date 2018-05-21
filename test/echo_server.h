@@ -2,14 +2,17 @@
 #define ECHO_SERVER_H
 
 #include <memory>
-#include "goku/tcp_server.h"
+#include "goku/loader.h"
+#include "goku/goku.h"
 
 NS_GOKU_BEG
 
 class EchoServer
 {
 public:
-	EchoServer(Loop *loop);
+	EchoServer(ILoop *loop);
+
+	~EchoServer();
 
 	void Start();
 
@@ -23,7 +26,7 @@ private:
 	void OnClose(peer_t peer);
 
 private:
-	TcpServer server_;
+	ITcpServer *server_;
 };
 
 NS_GOKU_END

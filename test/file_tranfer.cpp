@@ -4,24 +4,25 @@
 
 NS_GOKU_BEG
 
-FileTransferSender::FileTransferSender(Loop *loop, char const *file)
-	: client_(loop)
-	, filePath_(file)
+FileTransferSender::FileTransferSender(ILoop *loop, char const *file)
+	: filePath_(file)
 {
-	client_.SetOnConnectCallback(std::bind(&FileTransferSender::OnConnect, this, std::placeholders::_1));
-	client_.SetOnReadCallback(std::bind(&FileTransferSender::OnRead, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-	client_.SetOnCloseCallback(std::bind(&FileTransferSender::OnClose, this, std::placeholders::_1));
+	client_ = GetGoku()->CreateTcpClient(loop);
+	client_->SetOnConnectCallback(std::bind(&FileTransferSender::OnConnect, this, std::placeholders::_1));
+	client_->SetOnReadCallback(std::bind(&FileTransferSender::OnRead, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	client_->SetOnCloseCallback(std::bind(&FileTransferSender::OnClose, this, std::placeholders::_1));
 }
 
 
 FileTransferSender::~FileTransferSender()
 {
+	GetGoku()->DestroyTcpClient(client_);
 }
 
 
 int FileTransferSender::Start()
 {
-	int ret = client_.Connect("127.0.0.1", 50001);
+	int ret = client_->Connect("127.0.0.1", 50001);
 	assert(!ret);
 	return 0;
 }
@@ -53,27 +54,33 @@ void FileTransferSender::OnConnect(int status)
 	void *buf = malloc(fsz);
 	size_t const read = fread(buf, 1, fsz, fp);
 	assert(read == fsz);
-	client_.Send(&fsz, sizeof(fsz));
-	client_.Send(buf, fsz);
+	client_->Send(&fsz, sizeof(fsz));
+	client_->Send(buf, fsz);
 	free(buf);
 }
 
 
 
-FileTransferReceiver::FileTransferReceiver(Loop *loop)
-	: server_(loop)
+FileTransferReceiver::FileTransferReceiver(ILoop *loop)
 {
-	server_.SetOnConnectionCallback(std::bind(&FileTransferReceiver::OnConnection, this, std::placeholders::_1));
-	server_.SetOnReadCallback(std::bind(&FileTransferReceiver::OnRead, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-	server_.SetOnCloseCallback(std::bind(&FileTransferReceiver::OnClose, this, std::placeholders::_1));
+	server_ = GetGoku()->CreateTcpServer(loop);
+	server_->SetOnConnectionCallback(std::bind(&FileTransferReceiver::OnConnection, this, std::placeholders::_1));
+	server_->SetOnReadCallback(std::bind(&FileTransferReceiver::OnRead, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	server_->SetOnCloseCallback(std::bind(&FileTransferReceiver::OnClose, this, std::placeholders::_1));
 	
 	buffer_.reserve(1 << 30);
 }
 
 
+FileTransferReceiver::~FileTransferReceiver()
+{
+	GetGoku()->DestroyTcpServer(server_);
+}
+
+
 int FileTransferReceiver::Start()
 {
-	int ret = server_.StartListen("0.0.0.0", 50001);
+	int ret = server_->StartListen("0.0.0.0", 50001);
 	assert(!ret);
 	return 0;
 }
@@ -103,7 +110,10 @@ void FileTransferReceiver::OnRead(peer_t peer, void *buf, size_t sz)
 	fclose(fp);
 
 	// 成功接收后，断开连接
-	server_.Disconnect(peer);
+	server_->Disconnect(peer);
+	
+	// 停止服务器
+	server_->StopListen();
 }
 
 

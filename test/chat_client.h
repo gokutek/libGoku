@@ -1,15 +1,15 @@
 #ifndef CHAT_CLIENT_H
 #define CHAT_CLIENT_H
 
-#include "goku/define.h"
-#include "goku/tcp_client.h"
+#include "goku/loader.h"
+#include "goku/goku.h"
 
 NS_GOKU_BEG
 
 class ChatClient
 {
 public:
-	ChatClient(Loop *loop);
+	ChatClient(ILoop *loop);
 	
 	~ChatClient();
 
@@ -23,7 +23,7 @@ private:
 	void OnConnect(int status);
 
 private:
-	TcpClient client_;
+	ITcpClient *client_;
 };
 
 NS_GOKU_END

@@ -1,7 +1,8 @@
 ﻿#include <assert.h>
 #include <crtdbg.h>
 #include <iostream>
-#include "goku/loop.h"
+#include "goku/loader.h"
+#include "goku/goku.h"
 #include "echo_server.h"
 #include "chat_client.h"
 #include "file_tranfer.h"
@@ -9,41 +10,45 @@
 
 static void test_echo_server()
 {
-	goku::Loop loop;
-	goku::EchoServer server(&loop);
+	goku::ILoop *loop = GetGoku()->CreateLoop();
+	goku::EchoServer server(loop);
 	server.Start();
-	loop.Run(goku::LoopRunMode::DEFAULT);
-	loop.Close();
+	loop->Run(goku::LoopRunMode::DEFAULT);
+	loop->Close();
+	GetGoku()->DestroyLoop(loop);
 }
 
 
 static void test_chat_client()
 {
-	goku::Loop loop;
-	goku::ChatClient client(&loop);
+	goku::ILoop *loop = GetGoku()->CreateLoop();
+	goku::ChatClient client(loop);
 	client.Start();
-	loop.Run(goku::LoopRunMode::DEFAULT);
-	loop.Close();
+	loop->Run(goku::LoopRunMode::DEFAULT);
+	loop->Close();
+	GetGoku()->DestroyLoop(loop);
 }
 
 
 static void test_file_transfer_sender(char const *file)
 {
-	goku::Loop loop;
-	goku:: FileTransferSender sender(&loop, file);
+	goku::ILoop *loop = GetGoku()->CreateLoop();
+	goku:: FileTransferSender sender(loop, file);
 	sender.Start();
-	loop.Run(goku::LoopRunMode::DEFAULT);
-	loop.Close();
+	loop->Run(goku::LoopRunMode::DEFAULT);
+	loop->Close();
+	GetGoku()->DestroyLoop(loop);
 }
 
 
 static void test_file_transfer_receiver()
 {
-	goku::Loop loop;
-	goku::FileTransferReceiver server(&loop);
+	goku::ILoop *loop = GetGoku()->CreateLoop();
+	goku::FileTransferReceiver server(loop);
 	server.Start();
-	loop.Run(goku::LoopRunMode::DEFAULT);
-	loop.Close();
+	loop->Run(goku::LoopRunMode::DEFAULT);
+	loop->Close();
+	GetGoku()->DestroyLoop(loop);
 }
 
 
@@ -80,6 +85,7 @@ int main(int argc, char *argv[])
 	_CrtSetReportFile(_CRT_ERROR, _CRTDBG_FILE_STDOUT);
 	_CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE);
 	_CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDOUT);
+	//_CrtSetBreakAlloc(163);
 	int const ret = console_main(argc, argv);
 	_CrtDumpMemoryLeaks();
 	return ret;

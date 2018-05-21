@@ -1,37 +1,38 @@
-﻿#ifndef TCP_SERVER_IMPL_H
-#define TCP_SERVER_IMPL_H
+﻿#ifndef TCP_SERVER_H
+#define TCP_SERVER_H
 
 #include <map>
 #include <memory>
 #include <stdint.h>
 #include "goku/define.h"
-#include "goku/loop.h"
+#include "goku/i_tcp_server.h"
+#include "loop.h"
 #include "uv.h"
 
 NS_GOKU_BEG
 
 class TcpConnection;
 
-class TcpServerImpl
+class TcpServer : public ITcpServer
 {
 public:
-	TcpServerImpl(Loop *loop);
+	TcpServer(Loop *loop);
 
-	~TcpServerImpl();
+	~TcpServer();
 
-	int StartListen(char const *ip, int port);
+	int StartListen(char const *ip, int port) override;
 
-	int StopListen();
+	int StopListen() override;
 
-	void SetOnConnectionCallback(on_connection_cb_t const cb);
+	void SetOnConnectionCallback(on_connection_cb_t const cb) override;
 
-	void SetOnReadCallback(on_read_cb_t const &cb);
+	void SetOnReadCallback(on_read_cb_t const &cb) override;
 
-	void SetOnShutdownCallback(on_close_cb_t const &cb);
+	void SetOnCloseCallback(on_close_cb_t const &cb) override;
 
-	int Send(peer_t peer, void *data, size_t sz);
+	int Send(peer_t peer, void *data, size_t sz) override;
 
-	int Disconnect(peer_t peer);
+	int Disconnect(peer_t peer) override;
 
 private:
 	// 收到客户端连接
@@ -57,4 +58,4 @@ private:
 
 NS_GOKU_END
 
-#endif // TCP_SERVER_IMPL_H
+#endif // TCP_SERVER_H

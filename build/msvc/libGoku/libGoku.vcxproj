@@ -156,11 +156,10 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\source\dll_main.cpp" />
     <ClCompile Include="..\..\..\source\loop.cpp" />
+    <ClCompile Include="..\..\..\source\object_factory.cpp" />
     <ClCompile Include="..\..\..\source\tcp_client.cpp" />
-    <ClCompile Include="..\..\..\source\tcp_client_impl.cpp" />
     <ClCompile Include="..\..\..\source\tcp_connection.cpp" />
     <ClCompile Include="..\..\..\source\tcp_server.cpp" />
-    <ClCompile Include="..\..\..\source\tcp_server_impl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libuv\libuv.vcxproj">
@@ -169,13 +168,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\goku\define.h" />
-    <ClInclude Include="..\..\..\include\goku\loop.h" />
-    <ClInclude Include="..\..\..\include\goku\tcp_client.h" />
-    <ClInclude Include="..\..\..\include\goku\tcp_server.h" />
+    <ClInclude Include="..\..\..\include\goku\goku.h" />
+    <ClInclude Include="..\..\..\include\goku\i_object_factory.h" />
+    <ClInclude Include="..\..\..\include\goku\i_loop.h" />
+    <ClInclude Include="..\..\..\include\goku\i_tcp_client.h" />
+    <ClInclude Include="..\..\..\include\goku\i_tcp_server.h" />
+    <ClInclude Include="..\..\..\include\goku\loader.h" />
     <ClInclude Include="..\..\..\source\impl_define.h" />
-    <ClInclude Include="..\..\..\source\tcp_client_impl.h" />
+    <ClInclude Include="..\..\..\source\loop.h" />
+    <ClInclude Include="..\..\..\source\object_factory.h" />
+    <ClInclude Include="..\..\..\source\tcp_client.h" />
     <ClInclude Include="..\..\..\source\tcp_connection.h" />
-    <ClInclude Include="..\..\..\source\tcp_server_impl.h" />
+    <ClInclude Include="..\..\..\source\tcp_server.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

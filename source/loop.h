@@ -1,7 +1,7 @@
-﻿#ifndef GOKU_LOOP_H
-#define GOKU_LOOP_H
+﻿#ifndef LOOP_H
+#define LOOP_H
 
-#include "define.h"
+#include "goku/i_loop.h"
 
 struct uv_loop_s;
 
@@ -14,7 +14,7 @@ NS_GOKU_BEG
 3. 区分几种LoopRunMode；
 ===============================================================================
 */
-class GOKU_API Loop
+class Loop : public ILoop
 {
 public:
 	Loop();
@@ -27,11 +27,11 @@ public:
 
 	operator uv_loop_s*();
 
-	int Run(LoopRunMode mode);
+	int Run(LoopRunMode mode) override;
 
-	int Close();
+	int Close() override;
 
-	void Diagnose();
+	void Diagnose() override;
 
 private:
 	uv_loop_s *loop_;
@@ -39,4 +39,4 @@ private:
 
 NS_GOKU_END
 
-#endif // GOKU_LOOP_H
+#endif // LOOP_H

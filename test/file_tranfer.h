@@ -3,15 +3,15 @@
 
 #include <string>
 #include <vector>
-#include "goku/tcp_server.h"
-#include "goku/tcp_client.h"
+#include "goku/loader.h"
+#include "goku/goku.h"
 
 NS_GOKU_BEG
 
 class FileTransferSender
 {
 public:
-	FileTransferSender(Loop *loop, char const *file);
+	FileTransferSender(ILoop *loop, char const *file);
 
 	~FileTransferSender();
 
@@ -25,7 +25,7 @@ private:
 	void OnConnect(int status);
 
 private:
-	TcpClient	client_;
+	ITcpClient	*client_;
 	std::string	filePath_;
 };
 
@@ -33,7 +33,9 @@ private:
 class FileTransferReceiver
 {
 public:
-	FileTransferReceiver(Loop *loop);
+	FileTransferReceiver(ILoop *loop);
+
+	~FileTransferReceiver();
 
 	int Start();
 
@@ -45,7 +47,7 @@ private:
 	void OnClose(peer_t peer);
 
 private:
-	TcpServer			server_;
+	ITcpServer			*server_;
 	std::vector<char>	buffer_;
 };
 
