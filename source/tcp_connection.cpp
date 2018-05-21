@@ -1,4 +1,5 @@
 ﻿#include <assert.h>
+#include <algorithm>
 #include "tcp_connection.h"
 #include "tcp_server_impl.h"
 #include "impl_define.h"
@@ -65,17 +66,26 @@ void TcpConnection::S_AfterShutdown(uv_shutdown_t *req, int status)
 }
 
 
-int TcpConnection::Send(void *data, size_t sz)
+int TcpConnection::Send(void const *data, size_t sz)
 {
-	assert(data && sz);
-	auto req = std::make_unique<WriteRequest>();
-	void *clone = malloc(sz);
-	memcpy(clone, data, sz);
-	req->buf = uv_buf_init((char*)clone, (unsigned int)sz);
-	req->req.data = this;
+	if (!data) { return -1; }
+
 	bool const writeNow = writeQueue_.empty();
-	writeQueue_.push(std::move(req));
+
+	while (sz > 0) {
+		size_t const frame_sz = (std::min)(sz, size_t(65536));
+		sz -= frame_sz;
+		auto req = std::make_unique<WriteRequest>();
+		void *clone = malloc(frame_sz);
+		memcpy(clone, data, frame_sz);
+		data = (char const*)data + frame_sz;
+		req->buf = uv_buf_init((char*)clone, (unsigned int)frame_sz);
+		req->req.data = this;
+		writeQueue_.push(std::move(req));
+	}
+
 	if (writeNow) { SendFromQueue(); }
+
 	return 0;
 }
 

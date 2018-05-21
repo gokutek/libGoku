@@ -30,7 +30,7 @@ public:
 	int Disconnect();
 
 	// 向服务器发送数据
-	int Send(void *data, size_t sz);
+	int Send(void const *data, size_t sz);
 
 	// 与服务端连接成功/失败
 	void SetOnConnectCallback(on_connect_cb_t const cb);

@@ -22,7 +22,7 @@ public:
 
 	int Init();
 
-	int Send(void *data, size_t sz);
+	int Send(void const *data, size_t sz);
 
 	int Close();
 

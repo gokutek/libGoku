@@ -21,7 +21,7 @@ public:
 
 	int Disconnect();
 
-	int Send(void *data, size_t sz);
+	int Send(void const *data, size_t sz);
 
 	void SetOnConnectCallback(on_connect_cb_t const cb);
 

@@ -55,7 +55,7 @@ void TcpClientImpl::S_OnConnect(uv_connect_t* req, int status)
 }
 
 
-int TcpClientImpl::Send(void *data, size_t sz)
+int TcpClientImpl::Send(void const *data, size_t sz)
 {
 	if (!connection_) { return -1; }
 	connection_->Send(data, sz);

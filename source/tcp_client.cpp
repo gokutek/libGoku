@@ -27,7 +27,7 @@ int TcpClient::Disconnect()
 }
 
 
-int TcpClient::Send(void *data, size_t sz)
+int TcpClient::Send(void const *data, size_t sz)
 {
 	return impl_->Send(data, sz);
 }
