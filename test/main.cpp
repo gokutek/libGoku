@@ -47,7 +47,7 @@ static void test_file_transfer_receiver()
 }
 
 
-int main(int argc, char *argv[])
+int console_main(int argc, char *argv[])
 {
 	if (argc < 2) {
 		std::cerr << "Invalid command line" << std::endl;
@@ -62,12 +62,19 @@ int main(int argc, char *argv[])
 	} else if (cmd == "test_file_transfer_receiver") {
 		test_file_transfer_receiver();
 	} else if (cmd == "test_file_transfer_sender") {
-		if (argc != 3) { 
+		if (argc != 3) {
 			std::cerr << "Please specified the file path you want to trasfer" << std::endl;
-			return 1; 
+			return 1;
 		}
 		test_file_transfer_sender(argv[2]);
 	}
-	_CrtDumpMemoryLeaks();
 	return 0;
+}
+
+
+int main(int argc, char *argv[])
+{
+	int const ret = console_main(argc, argv);
+	_CrtDumpMemoryLeaks();
+	return ret;
 }
