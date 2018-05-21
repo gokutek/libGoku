@@ -2,6 +2,7 @@
 #define FILE_TRANFER_H
 
 #include <string>
+#include <vector>
 #include "goku/tcp_server.h"
 #include "goku/tcp_client.h"
 
@@ -44,7 +45,8 @@ private:
 	void OnClose(peer_t peer);
 
 private:
-	TcpServer server_;
+	TcpServer			server_;
+	std::vector<char>	buffer_;
 };
 
 NS_GOKU_END

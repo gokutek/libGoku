@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <assert.h>
 #include "file_tranfer.h"
 
@@ -53,6 +53,7 @@ void FileTransferSender::OnConnect(int status)
 	void *buf = malloc(fsz);
 	size_t const read = fread(buf, 1, fsz, fp);
 	assert(read == fsz);
+	client_.Send(&fsz, sizeof(fsz));
 	client_.Send(buf, fsz);
 	free(buf);
 }
@@ -65,6 +66,8 @@ FileTransferReceiver::FileTransferReceiver(Loop *loop)
 	server_.SetOnConnectionCallback(std::bind(&FileTransferReceiver::OnConnection, this, std::placeholders::_1));
 	server_.SetOnReadCallback(std::bind(&FileTransferReceiver::OnRead, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	server_.SetOnCloseCallback(std::bind(&FileTransferReceiver::OnClose, this, std::placeholders::_1));
+	
+	buffer_.reserve(1 << 30);
 }
 
 
@@ -83,7 +86,24 @@ void FileTransferReceiver::OnConnection(peer_t peer)
 
 void FileTransferReceiver::OnRead(peer_t peer, void *buf, size_t sz)
 {
-	std::cout << sz << std::endl;
+	size_t const pos = buffer_.size();
+	buffer_.resize(pos + sz);
+	memcpy(&buffer_[pos], buf, sz);
+
+	// 检查文件是否接收完成
+	if (buffer_.size() < sizeof(long)) { return; }
+	long const fsz = *(long*)&buffer_[0];
+	if (buffer_.size() < fsz + sizeof(long)) { return; }
+
+	// 接收完成后写入文件
+	FILE *fp = fopen("D:\\receiver.txt", "wb");
+	assert(fp);
+	fwrite(&buffer_[sizeof(long)], 1, buffer_.size() - sizeof(long), fp);
+	fflush(fp);
+	fclose(fp);
+
+	// 成功接收后，断开连接
+	server_.Disconnect(peer);
 }
 
 
