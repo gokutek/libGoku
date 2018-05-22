@@ -20,9 +20,9 @@ public:
 
 	~TcpServer();
 
-	int StartListen(char const *ip, int port) override;
+	int Listen(char const *ip, int port) override;
 
-	int StopListen() override;
+	int Close() override;
 
 	void SetOnConnectionCallback(on_connection_cb_t const cb) override;
 

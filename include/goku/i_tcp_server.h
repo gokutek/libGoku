@@ -15,10 +15,10 @@ public:
 	virtual ~ITcpServer() = default;
 
 	// 开始监听
-	virtual int StartListen(char const *ip, int port) = 0;
+	virtual int Listen(char const *ip, int port) = 0;
 
 	// 停止监听
-	virtual int StopListen() = 0;
+	virtual int Close() = 0;
 
 	// 收到客户端连接
 	virtual void SetOnConnectionCallback(on_connection_cb_t const cb) = 0;

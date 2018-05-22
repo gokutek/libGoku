@@ -15,7 +15,7 @@ TcpServer::~TcpServer()
 }
 
 
-int TcpServer::StartListen(char const *ip, int port)
+int TcpServer::Listen(char const *ip, int port)
 {
 	struct sockaddr_in addr;
 	int ret = uv_ip4_addr(ip, port, &addr);
@@ -36,7 +36,7 @@ int TcpServer::StartListen(char const *ip, int port)
 }
 
 
-int TcpServer::StopListen()
+int TcpServer::Close()
 {
 	if (!server_) { return -1; }
 	if (uv_is_closing((uv_handle_t*)&*server_)) { return -1; }

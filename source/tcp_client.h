@@ -20,7 +20,7 @@ public:
 
 	int Connect(char const *ip, int port) override;
 
-	int Disconnect() override;
+	int Close() override;
 
 	int Send(void const *data, size_t sz) override;
 

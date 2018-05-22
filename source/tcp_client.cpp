@@ -34,7 +34,7 @@ int TcpClient::Connect(char const *ip, int port)
 }
 
 
-int TcpClient::Disconnect()
+int TcpClient::Close()
 {
 	if (!connection_) { return -1; }
 	return connection_->Close();

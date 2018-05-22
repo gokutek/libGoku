@@ -21,14 +21,14 @@ EchoServer::~EchoServer()
 
 void EchoServer::Start()
 {
-	int ret = server_->StartListen("0.0.0.0", 55555);
+	int ret = server_->Listen("0.0.0.0", 55555);
 	assert(!ret);
 }
 
 
 void EchoServer::Stop()
 {
-	server_->StopListen();
+	server_->Close();
 }
 
 

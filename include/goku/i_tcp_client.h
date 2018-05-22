@@ -18,7 +18,7 @@ public:
 	virtual int Connect(char const *ip, int port) = 0;
 
 	// 与服务器断开连接
-	virtual int Disconnect() = 0;
+	virtual int Close() = 0;
 
 	// 向服务器发送数据
 	virtual int Send(void const *data, size_t sz) = 0;

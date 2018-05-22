@@ -33,7 +33,7 @@ void ChatClient::OnRead(peer_t, void *data, size_t sz)
 	std::string const str((char const*)data, (char const*)data + sz);
 	std::cout << str << std::endl;
 	if (str == "quit") {
-		client_->Disconnect();
+		client_->Close();
 	}
 }
 

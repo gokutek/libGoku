@@ -80,7 +80,7 @@ FileTransferReceiver::~FileTransferReceiver()
 
 int FileTransferReceiver::Start()
 {
-	int ret = server_->StartListen("0.0.0.0", 50001);
+	int ret = server_->Listen("0.0.0.0", 50001);
 	assert(!ret);
 	return 0;
 }
@@ -113,7 +113,7 @@ void FileTransferReceiver::OnRead(peer_t peer, void *buf, size_t sz)
 	server_->Disconnect(peer);
 	
 	// 停止服务器
-	server_->StopListen();
+	server_->Close();
 }
 
 
