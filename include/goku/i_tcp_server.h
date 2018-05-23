@@ -20,13 +20,13 @@ public:
 	// 停止监听
 	virtual int Close() = 0;
 
-	// 收到客户端连接
+	// 设置收到客户端连接回调
 	virtual void SetOnConnectionCallback(on_connection_cb_t const cb) = 0;
 
-	// 收到客户端数据
+	// 设置收到客户端数据回调
 	virtual void SetOnReadCallback(on_read_cb_t const &cb) = 0;
 
-	// 客户端连接断开
+	// 设置客户端连接断开回调
 	virtual void SetOnCloseCallback(on_close_cb_t const &cb) = 0;
 
 	// 向客户端发送数据

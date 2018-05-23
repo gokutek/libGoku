@@ -23,13 +23,13 @@ public:
 	// 向服务器发送数据
 	virtual int Send(void const *data, size_t sz) = 0;
 
-	// 与服务端连接成功/失败
+	// 设置与服务端连接成功/失败回调
 	virtual void SetOnConnectCallback(on_connect_cb_t const cb) = 0;
 
-	// 收到服务端数据
+	// 设置收到服务端数据回调
 	virtual void SetOnReadCallback(on_read_cb_t const &cb) = 0;
 
-	// 与服务端连接断开
+	// 设置与服务端连接断开回调
 	virtual void SetOnCloseCallback(on_close_cb_t const &cb) = 0;
 };
 
